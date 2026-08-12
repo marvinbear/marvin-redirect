@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>正在跳转 Marvin OS</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0F0F10;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    .card {
+      text-align: center;
+      padding: 48px 56px;
+      border-radius: 24px;
+      background: #1C1C1E;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      max-width: 420px;
+    }
+    .logo {
+      width: 64px; height: 64px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #7C7CFF, #A78BFA);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; font-weight: 800;
+      margin: 0 auto 20px;
+    }
+    h1 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+    .spinner {
+      width: 28px; height: 28px;
+      border: 3px solid rgba(124,124,255,0.2);
+      border-top-color: #7C7CFF;
+      border-radius: 50%;
+      margin: 24px auto 0;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .link {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">M</div>
+    <h1>正在跳转 Marvin OS</h1>
+    <p>若页面未自动跳转，请点击下方链接</p>
+    <div class="spinner"></div>
+    <a id="manual" class="link" href="#">手动进入</a>
+  </div>
+  <script>
+    // 目标地址：腾讯云服务器（未备案期间用非标端口 8080）
+    const TARGET = "http://43.136.115.84:8080";
+
+    document.getElementById("manual").href = TARGET;
+    setTimeout(function () {
+      window.location.replace(TARGET);
+    }, 1200);
+  </script>
+</body>
+</html>
