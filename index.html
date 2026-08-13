@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>正在跳转 Marvin OS</title>
+  <title>Marvin OS</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -14,60 +14,160 @@
       background: #0F0F10;
       color: #fff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      overflow: hidden;
+      position: relative;
     }
+    /* 背景光斑 */
+    .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: .35; pointer-events: none; animation: float 8s ease-in-out infinite; }
+    .orb-1 { width: 420px; height: 420px; background: #7C7CFF; top: -120px; left: -100px; }
+    .orb-2 { width: 380px; height: 380px; background: #A78BFA; bottom: -140px; right: -80px; animation-delay: -4s; }
+    .orb-3 { width: 260px; height: 260px; background: #34D399; top: 55%; left: 55%; opacity: .16; animation-delay: -2s; }
+    @keyframes float { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-30px) scale(1.08); } }
+
     .card {
+      position: relative; z-index: 1;
+      width: min(420px, calc(100vw - 48px));
       text-align: center;
-      padding: 48px 56px;
+      padding: 44px 40px 34px;
       border-radius: 24px;
-      background: #1C1C1E;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      max-width: 420px;
+      background: rgba(28,28,30,.72);
+      border: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 24px 80px rgba(0,0,0,.5);
+      animation: rise .6s cubic-bezier(.2,.8,.2,1);
     }
+    @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
     .logo {
-      width: 64px; height: 64px;
+      width: 64px; height: 64px; margin: 0 auto 18px;
       border-radius: 18px;
       background: linear-gradient(135deg, #7C7CFF, #A78BFA);
       display: flex; align-items: center; justify-content: center;
-      font-size: 30px; font-weight: 800;
-      margin: 0 auto 20px;
+      box-shadow: 0 12px 32px rgba(124,124,255,.4);
+      transition: transform .3s;
     }
-    h1 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-    p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; }
-    .spinner {
-      width: 28px; height: 28px;
-      border: 3px solid rgba(124,124,255,0.2);
-      border-top-color: #7C7CFF;
-      border-radius: 50%;
-      margin: 24px auto 0;
-      animation: spin 0.9s linear infinite;
+    .logo.pulse { animation: logoPulse 1.4s ease-in-out infinite; }
+    @keyframes logoPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+    .logo svg { width: 32px; height: 32px; }
+
+    h1 { font-size: 22px; font-weight: 800; letter-spacing: .5px; }
+    .sub { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 6px; letter-spacing: 2.5px; }
+
+    .status { margin-top: 28px; font-size: 13px; color: rgba(255,255,255,.55); height: 20px; }
+    .status b { color: #fff; font-weight: 600; }
+
+    .progress-track {
+      margin-top: 14px; height: 4px; border-radius: 99px;
+      background: rgba(255,255,255,.08);
+      overflow: hidden;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .link {
-      display: inline-block;
-      margin-top: 20px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      text-decoration: underline;
+    .progress-fill {
+      height: 100%; width: 0;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #7C7CFF, #A78BFA);
+      transition: width .1s linear;
+      box-shadow: 0 0 12px rgba(124,124,255,.6);
     }
+
+    .count {
+      margin-top: 16px; font-size: 26px; font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: #7C7CFF;
+      transition: opacity .15s;
+    }
+
+    .btn {
+      margin-top: 24px; width: 100%; padding: 13px 0;
+      border: none; border-radius: 14px;
+      background: linear-gradient(135deg, #7C7CFF, #A78BFA);
+      color: #fff; font-size: 14px; font-weight: 700; letter-spacing: 3px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(124,124,255,.35);
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 14px 30px rgba(124,124,255,.45); }
+    .btn:active { transform: scale(.97); }
+
+    .meta { margin-top: 20px; font-size: 11px; color: rgba(255,255,255,.3); }
+    .meta a { color: rgba(255,255,255,.5); text-decoration: none; border-bottom: 1px dashed rgba(255,255,255,.3); }
+
+    .fail {
+      display: none; margin-top: 16px;
+      font-size: 12px; color: #FCA5A5; line-height: 1.8;
+      background: rgba(252,165,165,.08);
+      border: 1px solid rgba(252,165,165,.2);
+      border-radius: 12px; padding: 10px 14px;
+    }
+    .fail a { color: #FCA5A5; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">M</div>
-    <h1>正在跳转 Marvin OS</h1>
-    <p>若页面未自动跳转，请点击下方链接</p>
-    <div class="spinner"></div>
-    <a id="manual" class="link" href="#">手动进入</a>
-  </div>
-  <script>
-    // 目标地址：腾讯云服务器（未备案期间用非标端口 8080）
-    const TARGET = "http://43.136.115.84:8080";
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
 
-    document.getElementById("manual").href = TARGET;
-    setTimeout(function () {
+  <div class="card">
+    <div class="logo pulse" id="logo">
+      <svg viewBox="0 0 24 24" fill="#fff"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/></svg>
+    </div>
+    <h1>Marvin OS</h1>
+    <div class="sub">PERSONAL LIFE DASHBOARD</div>
+
+    <div class="status" id="status">正在初始化连接…</div>
+    <div class="progress-track"><div class="progress-fill" id="bar"></div></div>
+    <div class="count" id="count">4</div>
+
+    <button class="btn" id="go">立即进入</button>
+
+    <div class="meta">目标 <a id="targetLink"></a></div>
+    <div class="fail" id="fail">自动跳转被浏览器拦截了，请点击上方「立即进入」。</div>
+  </div>
+
+  <script>
+  (function () {
+    // ===== 部署前必改：腾讯云服务器公网地址 =====
+    const TARGET = "http://43.136.115.84:8080";
+    // ==========================================
+
+    var STEPS = ["验证服务器状态", "正在准备跳转", "即将进入"];
+    var TOTAL = 4;                 // 总秒数
+    var bar = document.getElementById("bar");
+    var count = document.getElementById("count");
+    var status = document.getElementById("status");
+    var fail = document.getElementById("fail");
+    var logo = document.getElementById("logo");
+    var link = document.getElementById("targetLink");
+
+    link.textContent = TARGET.replace(/^https?:\/\//, "");
+    link.href = TARGET;
+
+    var left = TOTAL;
+    var timer = setInterval(function () {
+      left--;
+      if (left <= 0) {
+        clearInterval(timer);
+        logo.classList.remove("pulse");
+        status.innerHTML = "<b>正在进入 Marvin OS…</b>";
+        count.style.opacity = "0";
+        bar.style.width = "100%";
+        try { window.location.replace(TARGET); } catch (e) { fail.style.display = "block"; }
+        // 兜底：1.5 秒后仍在当前页，说明跳转被拦截
+        setTimeout(function () {
+          if (!document.hidden) { fail.style.display = "block"; fail.style.opacity = "1"; }
+        }, 1500);
+      } else {
+        count.textContent = left;
+        bar.style.width = ((TOTAL - left) / TOTAL * 100) + "%";
+        status.innerHTML = "正在" + STEPS[TOTAL - left - 1];
+      }
+    }, 1000);
+
+    document.getElementById("go").addEventListener("click", function () {
+      clearInterval(timer);
       window.location.replace(TARGET);
-    }, 1200);
+    });
+  })();
   </script>
 </body>
 </html>
