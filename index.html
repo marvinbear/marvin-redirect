@@ -116,11 +116,11 @@
 
     <div class="status" id="status">正在初始化连接…</div>
     <div class="progress-track"><div class="progress-fill" id="bar"></div></div>
-    <div class="count" id="count">4</div>
+    <div class="count" id="count">3</div>
 
     <button class="btn" id="go">立即进入</button>
 
-    <div class="meta">目标 <a id="targetLink"></a></div>
+    <div class="meta">入口 <a id="targetLink"></a></div>
     <div class="fail" id="fail">自动跳转被浏览器拦截了，请点击上方「立即进入」。</div>
   </div>
 
@@ -131,7 +131,7 @@
     // ==========================================
 
     var STEPS = ["验证服务器状态", "正在准备跳转", "即将进入"];
-    var TOTAL = 4;                 // 总秒数
+    var TOTAL = 3;                 // 总秒数
     var bar = document.getElementById("bar");
     var count = document.getElementById("count");
     var status = document.getElementById("status");
@@ -139,7 +139,7 @@
     var logo = document.getElementById("logo");
     var link = document.getElementById("targetLink");
 
-    link.textContent = TARGET.replace(/^https?:\/\//, "");
+    link.textContent = "marvincat.online";
     link.href = TARGET;
 
     var left = TOTAL;
